@@ -30,11 +30,11 @@ void XN_CALLBACK_TYPE User_NewUser(xn::UserGenerator& generator, XnUserID nId, v
 	ROS_INFO("New User %d", nId);
 	
 	g_UserGenerator.GetSkeletonCap().StartTracking(nId);
-	XnPoint3D* com = new XnPoint3D();
-	g_UserGenerator.GetCoM(nId, *com);
-	ROS_INFO(" not calibrated X : %f  ", com->X);
-	ROS_INFO(" not calibrated Y : %f  ", com->Y);
-	ROS_INFO(" not calibrated Z : %f  ", com->Z);
+//	XnPoint3D* com = new XnPoint3D();
+//	g_UserGenerator.GetCoM(nId, *com);
+//	ROS_INFO(" not calibrated X : %f  ", com->X);
+//	ROS_INFO(" not calibrated Y : %f  ", com->Y);
+//	ROS_INFO(" not calibrated Z : %f  ", com->Z);
 
 /* En attendant de pouvoir faire mieux, poste le fait qu'un user soit dans le champ de vision */
 	std_msgs::String msg;
@@ -45,8 +45,7 @@ void XN_CALLBACK_TYPE User_NewUser(xn::UserGenerator& generator, XnUserID nId, v
 /* Fin de la publication  */
 
 	if (g_bNeedPose)
-		ROS_INFO ("NEED POSE");
-		//g_UserGenerator.GetPoseDetectionCap().StartPoseDetection(g_strPose, nId);
+		g_UserGenerator.GetPoseDetectionCap().StartPoseDetection(g_strPose, nId);
 	else
 		g_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
 }
