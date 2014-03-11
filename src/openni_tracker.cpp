@@ -10,7 +10,7 @@
 #include <XnCppWrapper.h>
 #include <XnTypes.h>
 
-#include <std_msgs/String.h>
+#include <std_msgs/Int32.h>
 
 
 using std::string;
@@ -37,10 +37,10 @@ void XN_CALLBACK_TYPE User_NewUser(xn::UserGenerator& generator, XnUserID nId, v
 //	ROS_INFO(" not calibrated Z : %f  ", com->Z);
 
 /* En attendant de pouvoir faire mieux, poste le fait qu'un user soit dans le champ de vision */
-	std_msgs::String msg;
-	std::stringstream ss; 
- 	ss << "New user " << nId << "  in sight";
-	msg.data = ss.str();
+	std_msgs::Int32 msg;
+//	std::stringstream ss; 
+ //	ss << "New user " << nId << "  in sight";
+	msg.data = nId;
 	isUserVisible_pub.publish(msg);
 /* Fin de la publication  */
 
@@ -53,10 +53,10 @@ void XN_CALLBACK_TYPE User_NewUser(xn::UserGenerator& generator, XnUserID nId, v
 void XN_CALLBACK_TYPE User_LostUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie) {
 	ROS_INFO("Lost user %d", nId);
 	/* Send mesage to notify that user desapeared*/
-	std_msgs::String msg;
-	std::stringstream ss; 
- 	ss << "User " << nId << " disapeared";
-	msg.data = ss.str();
+	std_msgs::Int32 msg;
+	//std::stringstream ss; 
+ 	//ss << "User " << nId << " disapeared";
+	msg.data = nId;
 	userDisapear_pub.publish(msg);
 }
 
@@ -173,8 +173,8 @@ int main(int argc, char **argv) {
     nRetVal = g_Context.FindExistingNode(XN_NODE_TYPE_DEPTH, g_DepthGenerator);
     CHECK_RC(nRetVal, "Find depth generator");
     /*  Initialisation du topic pour publier la vue d'un user */
-    isUserVisible_pub = nh.advertise<std_msgs::String>("isUserVisible", 1000);
-    userDisapear_pub = nh.advertise<std_msgs::String>("userDisapeared", 1000);
+    isUserVisible_pub = nh.advertise<std_msgs::Int32>("isUserVisible", 1000);
+    userDisapear_pub = nh.advertise<std_msgs::Int32>("userDisapeared", 1000);
 
 	nRetVal = g_Context.FindExistingNode(XN_NODE_TYPE_USER, g_UserGenerator);
 	if (nRetVal != XN_STATUS_OK) {
